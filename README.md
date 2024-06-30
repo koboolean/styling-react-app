@@ -70,3 +70,204 @@ import classes from './Header.module.css';
 * 단점
   * css를 알아야하며, 바닐라 css를 사용하여야 한다.
   * 상대적으로 많은 css파일을 관리해야 한다.
+
+
+
+---
+
+### styled Component
+
+* https://styled-components.com/
+* npm install styled-components
+```javascript
+import {styled} from 'styled-components'
+
+/* 정의 */
+const ControlContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+`
+
+/* 동적으로 스타일 정의 */
+const Label = styled.label`
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: ${(invalid) => invalid ? '#f87171' : '#6b7280'};
+`
+
+/* 호출 invalid 속성이 내장속성이므로 styled component에서만 사용되는 속성에는 일반적으로 $를 붙인다. */
+return (
+        <ControlContainer>
+          <Label $invalid={emailNotValid}>Email</Label>
+        </ControlContainer>
+)
+```
+
+#### 중첩 규칙 및 미디어쿼리 수정을 줄여 사용해보기
+```css
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+header img {
+  object-fit: contain;
+  margin-bottom: 2rem;
+  width: 11rem;
+  height: 11rem;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-align: center;
+  text-transform: uppercase;
+  color: #9a3412;
+  font-family: 'Pacifico', cursive;
+  margin: 0;
+}
+
+header p {
+  text-align: center;
+  color: #a39191;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  header {
+    margin-bottom: 4rem;
+  }
+
+  header h1 {
+    font-size: 2.25rem;
+  }
+}
+
+```
+
+* 위와 같은 css코드를 만들었다고 가정해보자
+* 이를 styled-component화 시키기란 보기보다 쉽지 않을것이다.
+* 다음과 같이 사용한다면 이를 한번에 수정이 가능하다.
+* header 정의부는 그대로 사용하며 그 이후 header가 참조되는 부분을 &로 변경하자.
+
+```javascript
+const StyledHeader = styled.header`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    
+    & img {
+    object-fit: contain;
+    margin-bottom: 2rem;
+    width: 11rem;
+    height: 11rem;
+  }
+  
+  & h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-align: center;
+    text-transform: uppercase;
+    color: #9a3412;
+    font-family: 'Pacifico', cursive;
+    margin: 0;
+  }
+  
+  & p {
+    text-align: center;
+    color: #a39191;
+    margin: 0;
+  }
+  
+  @media (min-width: 768px) {
+    & {
+      margin-bottom: 4rem;
+    }
+  
+    & h1 {
+      font-size: 2.25rem;
+    }
+  }
+`
+```
+
+* 적용한 전체코드
+```javascript
+import logo from '../assets/logo.png';
+import {styled} from "styled-components";
+
+const StyledHeader = styled.header`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    
+    & img {
+    object-fit: contain;
+    margin-bottom: 2rem;
+    width: 11rem;
+    height: 11rem;
+  }
+  
+  & h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-align: center;
+    text-transform: uppercase;
+    color: #9a3412;
+    font-family: 'Pacifico', cursive;
+    margin: 0;
+  }
+  
+  & p {
+    text-align: center;
+    color: #a39191;
+    margin: 0;
+  }
+  
+  @media (min-width: 768px) {
+    & {
+      margin-bottom: 4rem;
+    }
+  
+    & h1 {
+      font-size: 2.25rem;
+    }
+  }
+`
+
+export default function Header() {
+  return (
+    <StyledHeader>
+      <img src={logo} alt="A canvas" />
+      <h1>ReactArt</h1>
+      <p>A community of artists and art-lovers.</p>
+    </StyledHeader>
+  );
+}
+
+```
+
+* tag taplate이란
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates
+
+
+
