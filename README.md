@@ -15,7 +15,7 @@
   * css를 알아야 하거나, 디자이너가 추가로 필요하다.
   * 다른 컴포넌트 간 스타일 충돌 발생 가능성이 존재한다. (컴포넌트로 스코핑 되지 않는다.)
     * 만약 Header 컴포넌트에 Header.css를 적용한다고 가정한다.
-    * 그 경우, Header이 아닌 Main 컴포넌트에서도 이 Header.css를 참조하게 된다.
+    * 그 경우, **Header이 아닌 Main 컴포넌트에서도 이 Header.css를 참조**하게 된다.
     * 이는 css가 해당 Header 컴포넌트로 속하지 않는다는 뜻으로, 렌더링 된 페이지 전체에 위치하기 따문이다.
 
 ---
@@ -265,9 +265,46 @@ export default function Header() {
 }
 
 ```
+* 여러곳에서 동일한 스타일을 가진 경우도 종종 있게된다.
+* 이 경우 스타일 컴포넌트를 추가 후 사용을 할 수 있다.
+```javascript
+/* Button.jsx */
+import {styled} from "styled-components";
+
+const Button = styled.button`
+    padding: 1rem 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 0.25rem;
+    color: #1f2937;
+    background-color: #f0b322;
+    border-radius: 6px;
+    border: none;
+
+    &:hover {
+        background-color: #f0920e;
+    }
+`
+
+export default Button;
+
+```
+```
+/* Button.jsx를 사용하는 컴포넌트 */
+import Button from "./Button.jsx";
+
+<Button/>
+```
+* 장점
+  * 쉽고 빠르게 추가가 가능하다.
+  * 구성 가능한 스타일 함수와 컴포넌트의 개념과 아이디어가 유사해 리엑트를 개발하는 느낌으로 개발이 가능하다.
+  * css 규칙이나 스타일 충돌 발생이 없다.
+* 단점
+  * css코드를 사용할 줄 알아야한다.
+  * 리엑트와 css간 분리가 되어있지 않다.
+  * 작은 규모의 컴포넌트가 많이 생성될 수 있으며, 이는 불편을 야기할 수 있다.
 
 * tag taplate이란
 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates
 
-
-
+---
